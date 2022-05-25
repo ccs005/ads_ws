@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+
+<robot name="robot_car" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- base -->
+  <xacro:property name="base_length" value="5"/>
+  <xacro:property name="base_width" value="1.1"/>
+  <xacro:property name="base_height" value="1.8"/>
+
+  <!-- <xacro:property name="base_length_visual" value="5"/>
+  <xacro:property name="base_width_visual" value="1.3"/>
+  <xacro:property name="base_height_visual" value="0.3"/> -->
+
+  <xacro:property name="base_wheelbase" value="3"/>
+  <xacro:property name="base_cog2front" value="1.2"/>
+  <xacro:property name="base_cog_height" value="0.55"/>
+   <xacro:property name="base_ground_clearence" value="0.2"/>
+
+  <xacro:property name="base_mass" value="1800"/>
+  <xacro:property name="base_mass_ixx" value="900"/>
+  <xacro:property name="base_mass_iyy" value="2700"/>
+  <xacro:property name="base_mass_izz" value="2700"/>
+
+  <xacro:property name="wheel_radius" value="0.38" />
+ <!-- base -->
+
+ <link name="base_footprint">
+  <visual>
+    <geometry>
+      <sphere radius="0.01"/>
+    </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/> 
+  </visual>
+ </link>
+
+
+  <!--Car Body-->
+  <link name="base_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>  
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+    </collision>
+
+       <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${base_mass}"/>
+      <inertia
+        ixx="${base_mass_ixx}"  ixy="0.000000"  ixz="0.000000"
+        iyy="${base_mass_iyy}"  iyz="0.000000"
+        izz="${base_mass_izz}"/>
+    </inertial>
+
+    <visual>
+      <!-- <origin xyz="0 0 ${(base_height_visual - base_height)*0.5 }" rpy="0 0 0"/>   -->
+      <origin xyz="0 0 0 " rpy="0 0 0"/>
+      <geometry>
+        <!-- <box size="${base_length_visual} ${base_width_visual}  ${base_height_visual}"/> -->
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+      <material name="b_color" >
+        <color  rgba="0 0.8 0 0.2" />
+      </material>
+    </visual>
+  </link>
+
+      <gazebo reference="base_link">
+        <material>Gazebo/Green</material>
+    </gazebo>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <!-- <origin xyz="${base_wheelbase - base_cog2front } 0 ${base_cog_height}" rpy="0 0 0"/> -->
+     <origin xyz="0  0 ${0.5*base_height + base_ground_clearence}" rpy="0 0 0"/>
+  </joint>  
+
+
+  </robot>

@@ -1,0 +1,10 @@
+<launch>
+   <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 -1.57 0 -1.57 /depth_camera /depth_camera1" /> -->
+      <!-- <node pkg="rviz"  type="rviz" name="rviz"  args="-d $(find URDF_01)/config/showMyCar.rviz" /> -->
+       <node pkg="rviz"  type="rviz" name="rviz" args="-d $(find  vehicle_param)/config/rviz.rviz"/>
+      <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+      <!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/> -->
+
+<node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="robot_state_publisher_gui"/>
+ 
+</launch>

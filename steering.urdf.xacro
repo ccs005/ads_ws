@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+
+<robot name="robot_car" xmlns:xacro="http://www.ros.org/wiki/xacro">
+      
+      <xacro:property name="PI" value="3.1415926" />
+      <xacro:property name="steering_angle" value="0.6"/>    
+      <xacro:property name="steering_length" value="0.01"/>
+      <xacro:property name="steering_radius" value="0.1"/>
+      <xacro:property name="steering_mass" value="5"/>
+      <xacro:property name="steering_ixx" value="0.012"/>
+      <xacro:property name="steering_iyy" value="0.025"/>
+      <xacro:property name="steering_izz" value="0.012"/> 
+      <xacro:property name="wheel_track" value="1.8" />
+      <xacro:property name="wheel_joint_z"
+       value="${-1*( base_height*0.5 + base_ground_clearence - wheel_radius) }" />
+
+<!--Front  Steering-->
+<xacro:macro  name="steering_fun" params="steering_name flag_x flag_y">
+
+  <link name="${steering_name}_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+      <geometry>
+        <cylinder length="${steering_length}" radius="${steering_radius}"/>
+      </geometry>
+      <material name="red">
+            <color rgba="0 0 1 1" />
+      </material>
+    </visual>S
+
+      <collision>
+      <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+      <geometry>
+        <cylinder length="${steering_length}" radius="${steering_radius}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${steering_mass}"/>
+      <inertia
+      ixx="${steering_ixx}"  ixy="0.000000"  ixz="0.000000"
+      iyy="${steering_iyy}"  iyz="0.000000"
+      izz="${steering_izz}"/>
+     </inertial>
+</link>
+
+  <joint name="${steering_name}_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="${steering_name}_link"/>
+    <origin xyz="${base_wheelbase*0.5*flag_x} 
+                              ${0.5*flag_y*wheel_track}
+                              ${wheel_joint_z}" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-steering_angle}" upper="${steering_angle}" effort="1000000.0" velocity="10000.0"/>
+    <dynamics damping="10.0" friction="0.0"/>
+  </joint>
+
+
+  </xacro:macro >
+ <xacro:steering_fun steering_name="FR_steering"  flag_x="1"    flag_y="-1"/>
+ <xacro:steering_fun steering_name="FL_steering"  flag_x="1"   flag_y="1" />
+  <!-- <xacro:steering_fun steering_name="RR"  flag_x="-1"    flag_y="-1"/>
+ <xacro:steering_fun steering_name="RL"  flag_x="-1"   flag_y="1" /> -->
+
+
+  </robot>

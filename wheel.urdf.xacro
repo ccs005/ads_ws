@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+
+<robot name="robot_car" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+
+      <xacro:property name="wheel_radius" value="0.38" />
+      <xacro:property name="wheel_length" value="0.25" />
+      <xacro:property name="wheel_mass" value="25" />
+      <xacro:property name="PI" value="3.1415926" />
+      <xacro:property name="wheel_track" value="1.8" />
+      <xacro:property name="wheel_joint_z"
+       value="${-1*( base_height*0.5 + base_ground_clearence - wheel_radius) }" />
+      <xacro:property name="base_wheelbase" value="3"/>
+       <xacro:property name="wheel_inertial_ixx" value="0.5"/>
+      <xacro:property name="wheel_inertial_iyy" value="0.9"/>
+      <xacro:property name="wheel_inertial_izz" value="0.5"/> 
+
+ 
+      <!-- add wheel -->
+      <xacro:macro  name="wheel_fun" params="wheel_name  flag_x flag_y flag_z  parent_link ">
+      <link name="${wheel_name}_link">
+            <visual>
+                  <geometry>
+                        <cylinder radius="${wheel_radius}" length="${wheel_length}" />
+                  </geometry>
+                  <origin xyz="0 0 0" rpy="${0.5*PI} 0 0" />
+                  <material name="black" >
+                        <color  rgba="0 0 0 0.5" />
+                  </material>
+            </visual>
+
+            <collision>
+                   <geometry>
+                        <cylinder radius="${wheel_radius}" length="${wheel_length}" />
+                  </geometry>
+                  <origin xyz="0 0 0" rpy="${0.5*PI} 0 0" />
+            </collision>
+
+        <inertial>
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <mass value="${wheel_mass}"/>
+         <inertia
+         ixx="${wheel_inertial_ixx}"  ixy="0.000000"  ixz="0.000000"
+         iyy="${wheel_inertial_iyy}"  iyz="0.000000"
+         izz="${wheel_inertial_izz}"/>
+        </inertial>
+      </link>
+
+      <gazebo reference="${wheel_name}_link">
+            <material>Gazebo/Black</material>
+      </gazebo>
+
+      <joint name="${wheel_name}_joint" type="continuous">
+            <parent link="${parent_link}" />
+            <child link="${wheel_name}_link" />
+            <origin xyz=" ${flag_x*0.5*base_wheelbase} ${flag_y*0.5*wheel_track} ${flag_z*wheel_joint_z}" rpy="0 0 0" />
+            <axis xyz="0 1 0" />
+      </joint>
+   </xacro:macro >
+
+
+     <xacro:wheel_fun wheel_name="RR_wheel" flag_x="-1" flag_y="-1 " flag_z="1" parent_link="base_link" />
+     <xacro:wheel_fun wheel_name="RL_wheel" flag_x="-1" flag_y="1" flag_z="1" parent_link="base_link"  />
+      <xacro:wheel_fun wheel_name="FR_wheel" flag_x="0" flag_y="0" flag_z="0" parent_link="FR_steering_link"/>
+     <xacro:wheel_fun wheel_name="FL_wheel" flag_x="0" flag_y="0"  flag_z="0" parent_link="FL_steering_link" />
+
+
+  </robot>
+  
