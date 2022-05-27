@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+	<include file="$(find vehicle_param)/launch/carSpawn_xacro.launch">
+
+		<arg name="x" value="0.0"/>
+		<arg name="y" value="0.0"/>
+		<arg name="z" value="0.0"/>
+		
+		
+
+	</include>
+
+  <include file="$(find vehicle_param)/launch/control.launch">
+
+    
+  </include>
+
+</launch>

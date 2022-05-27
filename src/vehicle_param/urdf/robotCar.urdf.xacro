@@ -1,0 +1,7 @@
+<robot name="robot_car"  xmlns:xacro="http://wiki.ros.org/xacro" >
+      <xacro:include filename="body.urdf.xacro" />
+       <xacro:include filename="wheel.urdf.xacro" />
+      <xacro:include filename="steering.urdf.xacro" /> 
+     <xacro:include filename="move.urdf.xacro" /> 
+
+</robot>
